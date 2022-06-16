@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import './Todo.css';
 
+const currDate = new Date().toLocaleDateString();
+const currTime = new Date().toLocaleTimeString();
 
-function Task({ task, index, completeTask, removeTask }) {
+
+function Task({ task, index, completeTask, removeTask, }) {
     return (
         <>
-         
-        <div
-       
-            className="task"
-        style={{ textDecoration: task.completed ? "line-through" : "" }}
-        >
-            {task.title}
-            <button style={{ background: "rgb(128, 0, 32)",borderRadius:50,height:27,width:27}} onClick={() => removeTask(index)}>X</button>
-            <button onClick={() => completeTask(index)}>Completed</button>
-        </div>
-          </> 
+            <div
+                className="task"
+                style={{ textDecoration: task.completed ? "line-through" : "" }}
+            >
+                 
+                {task.title}
+                
+                
+                <button style={{ background: "rgb(128, 0, 32)", borderRadius: 50, height: 27, width: 27 }} onClick={() => removeTask(index)}>X</button>
+
+                <button type="submit" onClick={() => completeTask(index)}> Completed </button>
+                <input type="checkbox" onClick={() => Task}></input>
+               
+            </div>
+        </>
     );
 }
 
@@ -27,28 +34,27 @@ function CreateTask({ addTask }) {
         if (!value) return;
         addTask(value);
         setValue("");
-       
     }
     return (
         <>
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                className="input"
-                value={value}
-                placeholder="Add a new task"
-                onChange={e => setValue(e.target.value)}    
-            />
-           
-             
-           
-           <button type='submit' className="btn">Add Task</button>
-        </form>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    className="input"
+                    value={value}
+                    placeholder="Add a new task"
+                    onChange={e => setValue(e.target.value)}
+                />
+
+                <button type='submit' className="btn">Add Task</button>
+            </form>
         </>
     );
 }
 
 function Todo() {
+
+
     const [tasksRemaining, setTasksRemaining] = useState(0);
     const [tasks, setTasks] = useState([
         {
@@ -63,7 +69,7 @@ function Todo() {
             title: "Book tickets",
             completed: false
         }
-      
+
     ]);
 
     useEffect(() => { setTasksRemaining(tasks.filter(task => !task.completed).length) }, [tasks]);
@@ -72,8 +78,6 @@ function Todo() {
     const addTask = title => {
         const newTasks = [...tasks, { title, completed: false }];
         setTasks(newTasks);
-       
-
     };
 
     const completeTask = index => {
@@ -83,10 +87,13 @@ function Todo() {
     };
 
     const removeTask = index => {
+
         const newTasks = [...tasks];
         newTasks.splice(index, 1);
         setTasks(newTasks);
-        
+
+
+
     };
 
     return (
@@ -94,24 +101,29 @@ function Todo() {
             <h1 className='heading'>To-Do List</h1>
             <div className="header">Task in Progress - [{tasksRemaining}]</div>
             <div className="tasks">
-              
+                <p>{currDate} - {currTime}</p>
+
                 {tasks.map((task, index) => (
                     <Task
-                    task={task}
-                    index={index}
-                    // date ={date}
-                    completeTask={completeTask}
-                    removeTask={removeTask}
-                    key={index} 
+                        task={task}
+                        index={index}
+                        // date ={date}
+                        completeTask={completeTask}
+                        removeTask={removeTask}
+                        key={index}
                     />
-                  
+
+
                 ))}
+
             </div>
             <div className="create-task" >
                 <CreateTask addTask={addTask} />
-                
             </div>
+
+
         </div>
+
     );
 }
 
